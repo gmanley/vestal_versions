@@ -9,14 +9,14 @@ describe VestalVersions::Conditions do
     end
 
     it 'is an array' do
-      User.vestal_versions_options[option].should be_a(Array)
+      expect(User.vestal_versions_options[option]).to be_a(Array)
       User.prepare_versioned_options(option => :true)
-      User.vestal_versions_options[option].should be_a(Array)
+      expect(User.vestal_versions_options[option]).to be_a(Array)
     end
 
     it 'has proc values' do
       User.prepare_versioned_options(option => :true)
-      User.vestal_versions_options[option].each{|i| i.should be_a(Proc) }
+      User.vestal_versions_options[option].each{|i| expect(i).to be_a(Proc) }
     end
   end
 
@@ -46,7 +46,13 @@ describe VestalVersions::Conditions do
           subject.update_attribute(:last_name, 'Jobs')
         end
 
-        its('versions.count'){ should == count + 1 }
+        describe '#versions' do
+          subject { super().versions }
+          describe '#count' do
+            subject { super().count }
+            it { is_expected.to eq(count + 1) }
+          end
+        end
       end
 
       context 'that fail' do
@@ -55,7 +61,13 @@ describe VestalVersions::Conditions do
           subject.update_attribute(:last_name, 'Jobs')
         end
 
-        its('versions.count'){ should == count }
+        describe '#versions' do
+          subject { super().versions }
+          describe '#count' do
+            subject { super().count }
+            it { is_expected.to eq(count) }
+          end
+        end
       end
     end
 
@@ -66,7 +78,13 @@ describe VestalVersions::Conditions do
           subject.update_attribute(:last_name, 'Jobs')
         end
 
-        its('versions.count'){ should == count }
+        describe '#versions' do
+          subject { super().versions }
+          describe '#count' do
+            subject { super().count }
+            it { is_expected.to eq(count) }
+          end
+        end
       end
 
       context 'that fail' do
@@ -75,7 +93,13 @@ describe VestalVersions::Conditions do
           subject.update_attribute(:last_name, 'Jobs')
         end
 
-        its('versions.count'){ should == count + 1 }
+        describe '#versions' do
+          subject { super().versions }
+          describe '#count' do
+            subject { super().count }
+            it { is_expected.to eq(count + 1) }
+          end
+        end
       end
     end
 
@@ -86,7 +110,13 @@ describe VestalVersions::Conditions do
           subject.update_attribute(:last_name, 'Jobs')
         end
 
-        its('versions.count'){ should == count }
+        describe '#versions' do
+          subject { super().versions }
+          describe '#count' do
+            subject { super().count }
+            it { is_expected.to eq(count) }
+          end
+        end
       end
 
       context 'that fail' do
@@ -95,7 +125,13 @@ describe VestalVersions::Conditions do
           subject.update_attribute(:last_name, 'Jobs')
         end
 
-        its('versions.count'){ should == count }
+        describe '#versions' do
+          subject { super().versions }
+          describe '#count' do
+            subject { super().count }
+            it { is_expected.to eq(count) }
+          end
+        end
       end
     end
 
