@@ -4,8 +4,8 @@ Gem::Specification.new do |gem|
   gem.name    = 'vestal_versions'
   gem.version = '3.0.0'
 
-  gem.authors     = ['Steve Richert', "James O'Kelly", 'C. Jason Harrelson', 'Neil Gupta']
-  gem.email       = ['steve.richert@gmail.com', 'dreamr.okelly@gmail.com', 'jason@lookforwardenterprises.com', 'neil@metamorphium.com']
+  gem.authors     = ['Steve Richert', "James O'Kelly", 'C. Jason Harrelson', 'Neil Gupta', 'Grayson Manley']
+  gem.email       = ['steve.richert@gmail.com', 'dreamr.okelly@gmail.com', 'jason@lookforwardenterprises.com', 'neil@metamorphium.com', 'gray.manley@gmail.com']
   gem.description = "Keep a DRY history of your ActiveRecord models' changes"
   gem.summary     = gem.description
   gem.homepage    = 'http://github.com/neilgupta/vestal_versions'
