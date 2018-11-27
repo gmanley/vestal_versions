@@ -95,7 +95,7 @@ describe VestalVersions::Control do
 
         user.append_version{ user.update_attribute(:last_name, 'Jobs') }
 
-        other_last_version = user.versions(true).last
+        other_last_version = user.versions.reload.last
         expect(other_last_version.id).to eq(original_id)
         expect(other_last_version.attributes).not_to eq(original_attrs)
       end
@@ -110,7 +110,7 @@ describe VestalVersions::Control do
           user.update_attribute(:first_name, 'Steve')
         end
 
-        other_last_version = user.versions(true).last
+        other_last_version = user.versions.reload.last
         expect(other_last_version.id).to eq(original_id)
         expect(other_last_version.attributes).not_to eq(original_attrs)
       end

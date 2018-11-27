@@ -29,7 +29,7 @@ describe VestalVersions::Reset do
   it 'dissociates all versions after the target' do
     versions.reverse.each do |version|
       subject.reset_to!(version)
-      expect(subject.versions(true).after(version).count).to eq(0)
+      expect(subject.versions.reload.after(version).count).to eq(0)
     end
   end
 
