@@ -109,6 +109,5 @@ describe VestalVersions::Conditions do
         end
       end
     end
-
   end
 end
