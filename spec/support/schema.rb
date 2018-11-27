@@ -3,7 +3,13 @@ ActiveRecord::Base.establish_connection(
   :database => File.expand_path('../../test.db', __FILE__)
 )
 
-class CreateSchema < ActiveRecord::Migration[4.2]
+migration_class = if ActiveRecord::VERSION::MAJOR >= 5
+  ActiveRecord::Migration::Current
+else
+  ActiveRecord::Migration
+end
+
+class CreateSchema < migration_class
   def self.up
     create_table :users, :force => true do |t|
       t.string :first_name

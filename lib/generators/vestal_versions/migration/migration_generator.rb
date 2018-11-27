@@ -12,6 +12,17 @@ module VestalVersions
         migration_template 'migration.rb', "db/migrate/#{name}.rb"
         template 'initializer.rb', 'config/initializers/vestal_versions.rb'
       end
+
+
+      def migration_class
+        if ActiveRecord::VERSION::MAJOR >= 5
+          version = Float("#{ActiveRecord::VERSION::MAJOR}.#{ActiveRecord::VERSION::MINOR}")
+          "ActiveRecord::Migration[#{version}]"
+        else
+          "ActiveRecord::Migration"
+        end
+      end
     end
   end
 end
+
