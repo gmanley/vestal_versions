@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency 'bundler', '~> 1.17'
   gem.add_development_dependency 'rake', '~> 12.3'
+  gem.add_development_dependency 'pry', '~> 0.12'
 
   gem.files         = `git ls-files`.split($\)
   gem.test_files    = gem.files.grep(/^spec/)
