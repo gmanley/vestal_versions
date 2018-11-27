@@ -11,7 +11,7 @@ class CreateSchema < ActiveRecord::Migration
       t.timestamps
     end
 
-    create_table :versions, :force => true do |t|
+    create_table :vestal_versions, :force => true do |t|
       t.belongs_to :versioned, :polymorphic => true
       t.belongs_to :user, :polymorphic => true
       t.string :user_name
