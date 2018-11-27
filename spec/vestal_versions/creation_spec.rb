@@ -2,16 +2,12 @@ require 'spec_helper'
 
 describe VestalVersions::Creation do
   let(:name){ 'Steve Richert' }
-  subject{ User.create(:name => name) }
+  subject(:user) { User.create(:name => name) }
 
   context 'the number of versions' do
 
-    describe '#versions' do
-      subject { super().versions }
-      describe '#count' do
-        subject { super().count }
-        it { is_expected.to eq(0) }
-      end
+    it 'should equal zero' do
+      expect(user.versions.count).to eq(0)
     end
 
     context 'with :initial_version option' do
@@ -19,12 +15,8 @@ describe VestalVersions::Creation do
         User.prepare_versioned_options(:initial_version => true)
       end
 
-      describe '#versions' do
-        subject { super().versions }
-        describe '#count' do
-          subject { super().count }
-          it { is_expected.to eq(1) }
-        end
+      it 'should equal one' do
+        expect(user.versions.count).to eq(1)
       end
     end
 

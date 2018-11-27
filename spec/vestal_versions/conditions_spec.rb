@@ -24,15 +24,14 @@ describe VestalVersions::Conditions do
   it_should_behave_like 'a conditional option', :unless
 
   context 'a new version' do
-    subject{ User.create(:name => 'Steve Richert') }
-    let(:count){ subject.versions.count }
+    let(:user) { User.create(:name => 'Steve Richert') }
+    let!(:inital_count) { user.versions.count }
 
     before do
       User.class_eval do
         def true; true; end
         def false; false; end
       end
-      count # memoize this value
     end
 
     after do
@@ -43,30 +42,22 @@ describe VestalVersions::Conditions do
       context 'that pass' do
         before do
           User.prepare_versioned_options(:if => [:true])
-          subject.update_attribute(:last_name, 'Jobs')
+          user.update_attribute(:last_name, 'Jobs')
         end
 
-        describe '#versions' do
-          subject { super().versions }
-          describe '#count' do
-            subject { super().count }
-            it { is_expected.to eq(count + 1) }
-          end
+        it 'should create another version' do
+          expect(user.versions.count).to eq(inital_count + 1)
         end
       end
 
       context 'that fail' do
         before do
           User.prepare_versioned_options(:if => [:false])
-          subject.update_attribute(:last_name, 'Jobs')
+          user.update_attribute(:last_name, 'Jobs')
         end
 
-        describe '#versions' do
-          subject { super().versions }
-          describe '#count' do
-            subject { super().count }
-            it { is_expected.to eq(count) }
-          end
+        it 'should not create another version' do
+          expect(user.versions.count).to eq(inital_count)
         end
       end
     end
@@ -75,30 +66,22 @@ describe VestalVersions::Conditions do
       context 'that pass' do
         before do
           User.prepare_versioned_options(:unless => [:true])
-          subject.update_attribute(:last_name, 'Jobs')
+          user.update_attribute(:last_name, 'Jobs')
         end
 
-        describe '#versions' do
-          subject { super().versions }
-          describe '#count' do
-            subject { super().count }
-            it { is_expected.to eq(count) }
-          end
+        it 'should not create another version' do
+          expect(user.versions.count).to eq(inital_count)
         end
       end
 
       context 'that fail' do
         before do
           User.prepare_versioned_options(:unless => [:false])
-          subject.update_attribute(:last_name, 'Jobs')
+          user.update_attribute(:last_name, 'Jobs')
         end
 
-        describe '#versions' do
-          subject { super().versions }
-          describe '#count' do
-            subject { super().count }
-            it { is_expected.to eq(count + 1) }
-          end
+        it 'should create another version' do
+          expect(user.versions.count).to eq(inital_count + 1)
         end
       end
     end
@@ -107,30 +90,22 @@ describe VestalVersions::Conditions do
       context 'that pass' do
         before do
           User.prepare_versioned_options(:if => [:true], :unless => [:true])
-          subject.update_attribute(:last_name, 'Jobs')
+          user.update_attribute(:last_name, 'Jobs')
         end
 
-        describe '#versions' do
-          subject { super().versions }
-          describe '#count' do
-            subject { super().count }
-            it { is_expected.to eq(count) }
-          end
+        it 'should not create another version' do
+          expect(user.versions.count).to eq(inital_count)
         end
       end
 
       context 'that fail' do
         before do
           User.prepare_versioned_options(:if => [:false], :unless => [:false])
-          subject.update_attribute(:last_name, 'Jobs')
+          user.update_attribute(:last_name, 'Jobs')
         end
 
-        describe '#versions' do
-          subject { super().versions }
-          describe '#count' do
-            subject { super().count }
-            it { is_expected.to eq(count) }
-          end
+        it 'should not create another version' do
+          expect(user.versions.count).to eq(inital_count)
         end
       end
     end
