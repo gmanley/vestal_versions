@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |gem|
   gem.name    = 'vestal_versions'
-  gem.version = '2.0.0'
+  gem.version = '3.0.0'
 
   gem.authors     = ['Steve Richert', "James O'Kelly", 'C. Jason Harrelson', 'Neil Gupta']
   gem.email       = ['steve.richert@gmail.com', 'dreamr.okelly@gmail.com', 'jason@lookforwardenterprises.com', 'neil@metamorphium.com']
@@ -11,11 +11,11 @@ Gem::Specification.new do |gem|
   gem.homepage    = 'http://github.com/neilgupta/vestal_versions'
   gem.license     = 'MIT'
 
-  gem.add_dependency 'activerecord', '>= 3', '< 6'
-  gem.add_dependency 'activesupport', '>= 3', '< 6'
+  gem.add_dependency 'activerecord', '>= 4', '< 6'
+  gem.add_dependency 'activesupport', '>= 4', '< 6'
 
-  gem.add_development_dependency 'bundler', '~> 1.0'
-  gem.add_development_dependency 'rake', '~> 10.0'
+  gem.add_development_dependency 'bundler', '~> 1.17'
+  gem.add_development_dependency 'rake', '~> 12.3'
 
   gem.files         = `git ls-files`.split($\)
   gem.test_files    = gem.files.grep(/^spec/)
