@@ -1,4 +1,4 @@
-class CreateVestalVersions < ActiveRecord::Migration
+class CreateVestalVersions < <%= migration_class %>
   def self.up
     create_table :vestal_versions do |t|
       t.belongs_to :versioned, :polymorphic => true

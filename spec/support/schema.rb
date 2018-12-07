@@ -3,7 +3,13 @@ ActiveRecord::Base.establish_connection(
   :database => File.expand_path('../../test.db', __FILE__)
 )
 
-class CreateSchema < ActiveRecord::Migration
+migration_class = if ActiveRecord::VERSION::MAJOR >= 5
+  ActiveRecord::Migration::Current
+else
+  ActiveRecord::Migration
+end
+
+class CreateSchema < migration_class
   def self.up
     create_table :users, :force => true do |t|
       t.string :first_name
@@ -11,7 +17,7 @@ class CreateSchema < ActiveRecord::Migration
       t.timestamps
     end
 
-    create_table :versions, :force => true do |t|
+    create_table :vestal_versions, :force => true do |t|
       t.belongs_to :versioned, :polymorphic => true
       t.belongs_to :user, :polymorphic => true
       t.string :user_name

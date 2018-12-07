@@ -1,9 +1,10 @@
 source 'https://rubygems.org'
 
-gemspec
+gem 'activerecord', '~> 5.2.0'
+
+gemspec :path => '..'
 
 group :test do
-  gem 'coveralls', '~> 0.8', :require => false
   gem 'rspec', '~> 3.8'
   gem 'sqlite3', '~> 1.0'
 end

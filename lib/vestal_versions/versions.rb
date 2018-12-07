@@ -1,21 +1,3 @@
-# See: https://github.com/rails/rails/issues/11026
-if ActiveRecord::VERSION::MAJOR == 3 && ActiveRecord::VERSION::MINOR == 0 && RUBY_VERSION >= "2.0.0"
-  module ActiveRecord
-    module Associations
-      class AssociationProxy
-        def send(method, *args)
-          if proxy_respond_to?(method, true)
-            super
-          else
-            load_target
-            @target.send(method, *args)
-          end
-        end
-      end
-    end
-  end
-end
-
 module VestalVersions
   # An extension module for the +has_many+ association with versions.
   module Versions
@@ -31,7 +13,7 @@ module VestalVersions
       return [] if from_number.nil? || to_number.nil?
 
       condition = (from_number == to_number) ? to_number : Range.new(*[from_number, to_number].sort)
-      where(:number => condition).order("#{table_name}.#{connection.quote_column_name('number')} #{(from_number > to_number) ? 'DESC' : 'ASC'}").to_a
+      where(:number => condition).order(Arel.sql("#{table_name}.#{connection.quote_column_name('number')} #{(from_number > to_number) ? 'DESC' : 'ASC'}")).to_a
     end
 
     # Returns all version records created before the version associated with the given value.

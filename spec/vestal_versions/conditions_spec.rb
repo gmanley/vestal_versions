@@ -9,14 +9,14 @@ describe VestalVersions::Conditions do
     end
 
     it 'is an array' do
-      User.vestal_versions_options[option].should be_a(Array)
+      expect(User.vestal_versions_options[option]).to be_a(Array)
       User.prepare_versioned_options(option => :true)
-      User.vestal_versions_options[option].should be_a(Array)
+      expect(User.vestal_versions_options[option]).to be_a(Array)
     end
 
     it 'has proc values' do
       User.prepare_versioned_options(option => :true)
-      User.vestal_versions_options[option].each{|i| i.should be_a(Proc) }
+      User.vestal_versions_options[option].each{|i| expect(i).to be_a(Proc) }
     end
   end
 
@@ -24,15 +24,14 @@ describe VestalVersions::Conditions do
   it_should_behave_like 'a conditional option', :unless
 
   context 'a new version' do
-    subject{ User.create(:name => 'Steve Richert') }
-    let(:count){ subject.versions.count }
+    let(:user) { User.create(:name => 'Steve Richert') }
+    let!(:inital_count) { user.versions.count }
 
     before do
       User.class_eval do
         def true; true; end
         def false; false; end
       end
-      count # memoize this value
     end
 
     after do
@@ -43,19 +42,23 @@ describe VestalVersions::Conditions do
       context 'that pass' do
         before do
           User.prepare_versioned_options(:if => [:true])
-          subject.update_attribute(:last_name, 'Jobs')
+          user.update_attribute(:last_name, 'Jobs')
         end
 
-        its('versions.count'){ should == count + 1 }
+        it 'should create another version' do
+          expect(user.versions.count).to eq(inital_count + 1)
+        end
       end
 
       context 'that fail' do
         before do
           User.prepare_versioned_options(:if => [:false])
-          subject.update_attribute(:last_name, 'Jobs')
+          user.update_attribute(:last_name, 'Jobs')
         end
 
-        its('versions.count'){ should == count }
+        it 'should not create another version' do
+          expect(user.versions.count).to eq(inital_count)
+        end
       end
     end
 
@@ -63,19 +66,23 @@ describe VestalVersions::Conditions do
       context 'that pass' do
         before do
           User.prepare_versioned_options(:unless => [:true])
-          subject.update_attribute(:last_name, 'Jobs')
+          user.update_attribute(:last_name, 'Jobs')
         end
 
-        its('versions.count'){ should == count }
+        it 'should not create another version' do
+          expect(user.versions.count).to eq(inital_count)
+        end
       end
 
       context 'that fail' do
         before do
           User.prepare_versioned_options(:unless => [:false])
-          subject.update_attribute(:last_name, 'Jobs')
+          user.update_attribute(:last_name, 'Jobs')
         end
 
-        its('versions.count'){ should == count + 1 }
+        it 'should create another version' do
+          expect(user.versions.count).to eq(inital_count + 1)
+        end
       end
     end
 
@@ -83,21 +90,24 @@ describe VestalVersions::Conditions do
       context 'that pass' do
         before do
           User.prepare_versioned_options(:if => [:true], :unless => [:true])
-          subject.update_attribute(:last_name, 'Jobs')
+          user.update_attribute(:last_name, 'Jobs')
         end
 
-        its('versions.count'){ should == count }
+        it 'should not create another version' do
+          expect(user.versions.count).to eq(inital_count)
+        end
       end
 
       context 'that fail' do
         before do
           User.prepare_versioned_options(:if => [:false], :unless => [:false])
-          subject.update_attribute(:last_name, 'Jobs')
+          user.update_attribute(:last_name, 'Jobs')
         end
 
-        its('versions.count'){ should == count }
+        it 'should not create another version' do
+          expect(user.versions.count).to eq(inital_count)
+        end
       end
     end
-
   end
 end

@@ -2,18 +2,22 @@ require 'spec_helper'
 
 describe VestalVersions::Creation do
   let(:name){ 'Steve Richert' }
-  subject{ User.create(:name => name) }
+  subject(:user) { User.create(:name => name) }
 
   context 'the number of versions' do
 
-    its('versions.count'){ should == 0 }
+    it 'should equal zero' do
+      expect(user.versions.count).to eq(0)
+    end
 
     context 'with :initial_version option' do
       before do
         User.prepare_versioned_options(:initial_version => true)
       end
 
-      its('versions.count'){ should == 1 }
+      it 'should equal one' do
+        expect(user.versions.count).to eq(1)
+      end
     end
 
     it 'does not increase when no changes are made in an update' do
@@ -48,7 +52,7 @@ describe VestalVersions::Creation do
 
     it 'does not contain Rails timestamps' do
       %w(created_at created_on updated_at updated_on).each do |timestamp|
-        subject.versions.last.changes.keys.should_not include(timestamp)
+        expect(subject.versions.last.changes.keys).not_to include(timestamp)
       end
     end
 
@@ -56,14 +60,14 @@ describe VestalVersions::Creation do
       User.prepare_versioned_options(:only => [:first_name])
       subject.update_attribute(:name, 'Steven Tyler')
 
-      subject.versions.last.changes.keys.should == ['first_name']
+      expect(subject.versions.last.changes.keys).to eq(['first_name'])
     end
 
     it 'allows specific columns to be excluded via :except' do
       User.prepare_versioned_options(:except => [:first_name])
       subject.update_attribute(:name, 'Steven Tyler')
 
-      subject.versions.last.changes.keys.should_not include('first_name')
+      expect(subject.versions.last.changes.keys).not_to include('first_name')
     end
 
     it "prefers :only to :except" do
@@ -71,19 +75,19 @@ describe VestalVersions::Creation do
         :except => [:first_name])
       subject.update_attribute(:name, 'Steven Tyler')
 
-      subject.versions.last.changes.keys.should == ['first_name']
+      expect(subject.versions.last.changes.keys).to eq(['first_name'])
     end
   end
 
   context 'first version' do
     it 'is number 2 after an update' do
       subject.update_attribute(:last_name, 'Jobs')
-      subject.versions.first.number.should == 2
+      expect(subject.versions.first.number).to eq(2)
     end
 
     it "is number 1 if :initial_version is true" do
       User.prepare_versioned_options(:initial_version => true)
-      subject.versions.first.number.should == 1
+      expect(subject.versions.first.number).to eq(1)
     end
   end
 
